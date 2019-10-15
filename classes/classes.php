@@ -14,13 +14,13 @@ class author {
 	/**
 	 * Avatar URL for the author;
 	 **/
-	private $authorAvatarUrl;
-	/**
-	 *Activation token for this author;
-	 **/
 	private $authorActivationToken;
 	/**
 	 * Email address for this author; this is unique data.
+	 **/
+	private $authorAvatarUrl;
+	/**
+	 *Activation token for this author;
 	 **/
 	private $authorEmail;
 	/**
@@ -40,7 +40,6 @@ class author {
 	public function getAuthorId() {
 		return($this->authorId);
 	}
-
 	/**
 	 * mutator/setter method for author id
 	 *
@@ -57,6 +56,47 @@ class author {
 		//convert and store the author id
 		$this->authorId = intval($newAuthorId);
 	}
+
+	/**
+	 * accesor/getter method for author activation token
+	 *
+	 * @return string value of author activation token
+	 */
+	public function getAuthorActivationToken() {
+		return($this->authorActivationToken);
+	}
+	/**
+	 * mutator/setter method for author activation token
+	 *
+	 * @param string $newAuthorActivationToken
+	 * @throws InvalidArgumentException if token is not a string or insecure
+	 * @throws RangeException if the token is not exactly 32 characters
+	 * @throws TypeError if the token is not a string
+	 */
+	public function setAuthorActivationToken(?string newAuthorActivationToken): void {
+		//the above ?string is a nullable type which sanitized the parameter to either string or null
+		//this is a void function that should not return any value
+		if(newAuthorActivationToken === null) {
+			$this->authorActivationToken = null;
+			return;
+		}
+		//checks if 
+	}
+
+	/**
+	 * accesor/getter method for author avatar URL
+	 *
+	 * @return string value of author avatar URL
+	 */
+	public function getAuthorAvatarUrl() {
+		return($this->authorAvatarUrl)
+	}
+	/**
+	 * mutator/setter method for author avatar URL
+	 *
+	 * @param string $newAuthorAvatarUrl new value of author avatar url
+	 * @throws InvalidArgumentException if $newAuthorAvatarUrl is not a string
+	 */
 
 }
 ?>
