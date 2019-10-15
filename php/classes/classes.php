@@ -48,7 +48,7 @@ class author {
 	 * @param int $newAuthorId new value of author id
 	 * @throws UnexpectedValueException if $newAuthorId is not an integer
 	 */
-	public function setProfileId($newAuthorId) {
+	public function setAuthorId($newAuthorId) {
 		//verify the author id is valid
 		$newAuthorId = filter_var($newAuthorId, FILTER_VALIDATE_INT);
 		if($newAuthorId === false) {
@@ -209,5 +209,33 @@ class author {
 			throw(new RangeException("username is too long"));
 		}
 		$this->authorUsername = $newAuthorUsername;
+	}
+	/**
+	 * constructor for this author class
+	 *
+	 * @param int $newAuthorId
+	 * @param string $newAuthorActivationToken
+	 * @param string $newAuthorAvatarUrl
+	 * @param string $newAuthorEmail
+	 * @param string $newAuthorHash
+	 * @param string $newAuthorUsername
+	 * @throws InvalidArgumentException if data types are not valid
+	 * @throws RangeException if data values are out of bounds
+	 * @throws TypeError if data types violate type hints
+	 */
+	public function __construct($newAuthorId, $newAuthorActivationToken, $newAuthorAvatarUrl, $newAuthorEmail, $newAuthorHash, $newAuthorUsername) {
+		try {
+			$this->setAuthorId($newAuthorId);
+			$this->setAuthorActivationToken($newAuthorActivationToken);
+			$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
+			$this->setAuthorEmail($newAuthorEmail);
+			$this->setAuthorHash($newAuthorHash);
+			$this->setAuthorUsername($newAuthorUsername);
+		}
+			//determing what exception type was thrown
+		catch(InvalidArgumentException | RangeException | Exception | TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
 	}
 }
