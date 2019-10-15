@@ -8,7 +8,48 @@
  */
 class author {
 	/**
-	 * authorId
+	 * id for this author; this is the primary key
+	 **/
+	private $authorId;
+	/**
+	 * Avatar URL for the author;
+	 **/
+	private $authorAvatarUrl;
+	/**
+	 *Activation token for this author;
+	 **/
+	private $authorActivationToken;
+	/**
+	 * Email address for this author; this is unique data.
+	 **/
+	private $authorEmail;
+	/**
+	 * hash containing password data for this author;
+	 **/
+	private $authorHash;
+	/**
+	 * Username for this author; this is unique data.
+	 **/
+	private $authorUsername;
+
+	/**
+	 * accesor/getter method for author id
+	 *
+	 * @return int value of author id
+	 **/
+	public function getAuthorId() {
+		return($this->authorId);
+	}
+
+	/**
+	 * mutator/setter method for author id
+	 *
+	 * @param int $newAuthorId new value of author id
+	 * @throws UnexpectedValueException if $newAuthorId is not an integer
 	 */
+	public function setProfileId($newProfileId) {
+		
+	}
+
 }
 ?>
