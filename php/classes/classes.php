@@ -1,7 +1,4 @@
 <?php
-
-use http\Exception\BadQueryStringException;
-
 /**
  * Creating author generation class
  *
@@ -54,7 +51,6 @@ class author {
 		if($newAuthorId === false) {
 			throw(new UnexpectedValueException("profile id is not a valid integer"));
 		}
-
 		//convert and store the author id
 		$this->authorId = intval($newAuthorId);
 	}
