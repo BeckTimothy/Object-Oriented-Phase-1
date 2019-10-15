@@ -89,21 +89,33 @@ class author {
 		}
 		$this->authorActivationToken = $newAuthorActivationToken;
 	}
-
 	/**
 	 * accesor/getter method for author avatar URL
 	 *
 	 * @return string value of author avatar URL
 	 */
 	public function getAuthorAvatarUrl() {
-		return($this->authorAvatarUrl)
+		return($this->authorAvatarUrl);
 	}
 	/**
 	 * mutator/setter method for author avatar URL
 	 *
 	 * @param string $newAuthorAvatarUrl new value of author avatar url
-	 * @throws InvalidArgumentException if $newAuthorAvatarUrl is not a string
+	 * @throws UnexpectedValueException if $newAuthorAvatarUrl is not a url
+	 * @throws /RangeException if url is longer than 255 characters
 	 */
+	public function setAuthorAvatarUrl($newAuthorAvatarUrl) {
+		//checks if newAuthorAvatarUrl is a url
+		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_VALIDATE_URL);
+		if($newAuthorAvatarUrl === false) {
+			throw(new UnexpectedValueException("$newAuthorAvatarUrl is no a url"));
+		}
+		//checks if $newAuthorAvatarUrl is less than 255 length
+		if(strlen($newAuthorAvatarUrl) > 255) {
+			throw(new\RangeException("url needs to be less than 255 characters in length"));
+		}
+		$this->authorAuthorAvatarUrl = $newAuthorAvatarUrl;
+	}
 
 }
 ?>
