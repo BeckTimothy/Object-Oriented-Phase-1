@@ -157,7 +157,7 @@ class author {
 		return($this->authorHash);
 	}
 	/**
-	 * mutator/selector method for author hash
+	 * mutator/setter method for author hash
 	 *
 	 * @param string $newAuthorHash
 	 * @throws InvalidArgumentException is hash is insecure
@@ -181,5 +181,25 @@ class author {
 		}
 		$this->authorHash = $newAuthorHash;
 	}
+	/**
+	 * accessor/getter method for author username
+	 *
+	 * @return string value of author username
+	 */
+	public function getAuthorUsername() {
+		return($this->authorUsername);
+	}
+	/**
+	 * mutator/setter method for author Username
+	 *
+	 * @param string $newAuthorUsername
+	 * @throws InvalidArgumentException if username is not a string or insecure
+	 * @throws RangeException if username is longer than 32
+	 * @throws TypeError if username is not a string
+	 */
+	public function setAuthorUsername(string $newAuthorUsername): void {
+		//verify username is secure
+		$newAuthorUsername = trim($newAuthorUsername);
+		$newAuthorUsername = filter_var($newAuthorUsername, FILTER_SANITIZE_STRING, )
+	}
 }
-?>
