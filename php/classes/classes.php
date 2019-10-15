@@ -1,4 +1,7 @@
 <?php
+
+use http\Exception\BadQueryStringException;
+
 /**
  * Creating author generation class
  *
@@ -144,6 +147,39 @@ class author {
 			throw(new RangeException("Email is too long"));
 		}
 		$this->authorEmail = $newAuthorEmail;
+	}
+	/**
+	 * accesor/getter method for author hash
+	 *
+	 * @return string value of author hash
+	 */
+	public function getAuthorHash() {
+		return($this->authorHash);
+	}
+	/**
+	 * mutator/selector method for author hash
+	 *
+	 * @param string $newAuthorHash
+	 * @throws InvalidArgumentException is hash is insecure
+	 * @throws RangeException if author hash is not 97 chars
+	 * @throws TypeError if author has is not a string
+	 */
+	public function setAuthorHash(string $newAuthorHash): void {
+		//check if has is properly formatted
+		$newAuthorHash = trim($newAuthorHash);
+		if(empty($newAuthorHash) === true) {
+			throw(new InvalidArgumentException("hash is empty or insecure"));
+		}
+		//make sure hash is correct type of hash
+		$authorHashInfo = password_get_info($newAuthorHash);
+		if($authorHashInfo["algoName"] !== "argon2i") {
+			throw(new InvalidArgumentException("profile hash is not a valid hash"));
+		}
+		//check if has is exactly 97 characters
+		if(strlen($newAuthorHash) !== 97) {
+			throw(new RangeException("hash must be 97 characters in length"));
+		}
+		$this->authorHash = $newAuthorHash;
 	}
 }
 ?>
