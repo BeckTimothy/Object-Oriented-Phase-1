@@ -47,8 +47,15 @@ class author {
 	 * @param int $newAuthorId new value of author id
 	 * @throws UnexpectedValueException if $newAuthorId is not an integer
 	 */
-	public function setProfileId($newProfileId) {
-		
+	public function setProfileId($newAuthorId) {
+		//verify the author id is valid
+		$newAuthorId = filter_var($newAuthorId, FILTER_VALIDATE_INT);
+		if($newAuthorId === false) {
+			throw(new UnexpectedValueException("profile id is not a valid integer"));
+		}
+
+		//convert and store the author id
+		$this->authorId = intval($newAuthorId);
 	}
 
 }
