@@ -12,15 +12,15 @@ class author {
 	 **/
 	private $authorId;
 	/**
-	 * Avatar URL for the author;
+	 * Activation token for this author;
 	 **/
 	private $authorActivationToken;
 	/**
-	 * Email address for this author; this is unique data.
+	 * Avatar URL for the author;
 	 **/
 	private $authorAvatarUrl;
 	/**
-	 *Activation token for this author;
+	 *Email address for this author; this is unique data.
 	 **/
 	private $authorEmail;
 	/**
@@ -69,18 +69,27 @@ class author {
 	 * mutator/setter method for author activation token
 	 *
 	 * @param string $newAuthorActivationToken
-	 * @throws InvalidArgumentException if token is not a string or insecure
-	 * @throws RangeException if the token is not exactly 32 characters
-	 * @throws TypeError if the token is not a string
+	 * @throws \InvalidArgumentException if token is not a string or insecure
+	 * @throws \RangeException if the token is not exactly 32 characters
+	 * @throws \TypeError if the token is not a string
 	 */
-	public function setAuthorActivationToken(?string newAuthorActivationToken): void {
+	public function setAuthorActivationToken(?string $newAuthorActivationToken): void {
 		//the above ?string is a nullable type which sanitized the parameter to either string or null
 		//this is a void function that should not return any value
-		if(newAuthorActivationToken === null) {
+		if($newAuthorActivationToken === null) {
 			$this->authorActivationToken = null;
 			return;
 		}
-		//checks if 
+		//checks if token is valid
+		$newAuthorActivationToken = strtolower(trim($newAuthorActivationToken));
+		if(ctype_xdigit($newAuthorActivationToken) === false) {
+			throw(new\RangeException("user activation is not valid"));
+		}
+		//checks if token has 32 characters
+		if(strlen($newAuthorActivationToken) !== 32) {
+			throw(new\RangeException("user activation token has to be 32"));
+		}
+		$this->authorActivationToken = $newAuthorActivationToken;
 	}
 
 	/**
