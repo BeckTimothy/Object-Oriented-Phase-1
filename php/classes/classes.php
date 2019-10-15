@@ -67,9 +67,9 @@ class author {
 	 * mutator/setter method for author activation token
 	 *
 	 * @param string $newAuthorActivationToken
-	 * @throws \InvalidArgumentException if token is not a string or insecure
-	 * @throws \RangeException if the token is not exactly 32 characters
-	 * @throws \TypeError if the token is not a string
+	 * @throws InvalidArgumentException if token is not a string or insecure
+	 * @throws RangeException if the token is not exactly 32 characters
+	 * @throws TypeError if the token is not a string
 	 */
 	public function setAuthorActivationToken(?string $newAuthorActivationToken): void {
 		//the above ?string is a nullable type which sanitized the parameter to either string or null
@@ -81,11 +81,11 @@ class author {
 		//checks if token is valid
 		$newAuthorActivationToken = strtolower(trim($newAuthorActivationToken));
 		if(ctype_xdigit($newAuthorActivationToken) === false) {
-			throw(new\RangeException("user activation is not valid"));
+			throw(new RangeException("user activation is not valid"));
 		}
 		//checks if token has 32 characters
 		if(strlen($newAuthorActivationToken) !== 32) {
-			throw(new\RangeException("user activation token has to be 32"));
+			throw(new RangeException("user activation token has to be 32"));
 		}
 		$this->authorActivationToken = $newAuthorActivationToken;
 	}
@@ -102,7 +102,7 @@ class author {
 	 *
 	 * @param string $newAuthorAvatarUrl new value of author avatar url
 	 * @throws UnexpectedValueException if $newAuthorAvatarUrl is not a url
-	 * @throws /RangeException if url is longer than 255 characters
+	 * @throws RangeException if url is longer than 255 characters
 	 */
 	public function setAuthorAvatarUrl($newAuthorAvatarUrl) {
 		//checks if newAuthorAvatarUrl is a url
@@ -112,10 +112,38 @@ class author {
 		}
 		//checks if $newAuthorAvatarUrl is less than 255 length
 		if(strlen($newAuthorAvatarUrl) > 255) {
-			throw(new\RangeException("url needs to be less than 255 characters in length"));
+			throw(new RangeException("url needs to be less than 255 characters in length"));
 		}
 		$this->authorAuthorAvatarUrl = $newAuthorAvatarUrl;
 	}
-
+	/**
+	 * accesor/getter method for author email
+	 *
+	 * @return string value of author email
+	 */
+	public function getAuthorEmail() {
+		return($this->authorEmail);
+	}
+	/**
+	 * mutator/setter method for author email
+	 *
+	 * @param string $newAuthorEmail
+	 * @throws InvalidArgumentException if $newAuthorEmail is not valid email or insecure
+	 * @throws RangeException if $newAuthorEmail is more than 128 char
+	 * @throws TypeError if $newAuthorEmail is not a string
+	 */
+	public function setAuthorEmail(string $newAuthorEmail): void {
+		//verify the email is secure and string
+		$newAuthorEmail = trim($newAuthorEmail);
+		$newAuthorEmail = filter_var($newAuthorEmail, FILTER_VALIDATE_EMAIL);
+		if(empty($newAuthorEmail) === true) {
+			throw(new InvalidArgumentException("profile email is empty or insecure"));
+		}
+		//verify is email is not longer than 128 chars
+		if(strlen($newAuthorEmail) > 128) {
+			throw(new RangeException("Email is too long"));
+		}
+		$this->authorEmail = $newAuthorEmail;
+	}
 }
 ?>
