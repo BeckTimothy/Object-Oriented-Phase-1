@@ -1,5 +1,5 @@
 <?php
-namespace BeckTimothy\Object-Oriented-Phase-1;
+namespace BeckTimothy\ObjectOrientedPhase1;
 require_once(dirname(__DIR__, 2) . "./classes/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**

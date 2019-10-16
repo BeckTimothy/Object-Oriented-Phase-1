@@ -1,5 +1,5 @@
 <?php
-namespace BeckTimothy\Object-Oriented-Phase-1;
+namespace BeckTimothy\ObjectOrientedPhase1;
 /**
  * Trait to Validate a mySQL Date
  *

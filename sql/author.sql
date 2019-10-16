@@ -1,3 +1,6 @@
+drop table if exists articleTag;
+drop table if exists tag;
+drop table if exists article;
 drop table if exists author;
 
 create table author(
