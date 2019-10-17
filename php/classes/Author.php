@@ -2,7 +2,7 @@
 namespace BeckTimothy\ObjectOrientedPhase1;
 
 require_once("autoload.php");
-require_once(dirname(__DIR__) . "./classes/autoload.php");
+require_once(dirname(__DIR__) . "/classes/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 /**
