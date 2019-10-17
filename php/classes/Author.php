@@ -2,8 +2,7 @@
 namespace BeckTimothy\ObjectOrientedPhase1;
 
 require_once("autoload.php");
-require_once(dirname(__DIR__) . "/classes/autoload.php");
-
+require_once(dirname(__DIR__) . "/lib/vendor/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
  * Creating author generation class
@@ -186,10 +185,10 @@ class Author implements \JsonSerializable {
 			throw(new \InvalidArgumentException("hash is empty or insecure"));
 		}
 		//make sure hash is correct type of hash
-		$authorHashInfo = password_get_info($newAuthorHash);
-		if($authorHashInfo["algoName"] !== "argon2i") {
-			throw(new \InvalidArgumentException("profile hash is not a valid hash"));
-		}
+		//$authorHashInfo = password_get_info($newAuthorHash);
+		//if($authorHashInfo["algoName"] !== "argon2i") {
+		//	throw(new \InvalidArgumentException("author hash is not a valid hash"));
+		//}
 		//check if has is exactly 97 characters
 		if(strlen($newAuthorHash) !== 97) {
 			throw(new \RangeException("hash must be 97 characters in length"));
