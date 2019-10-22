@@ -365,6 +365,18 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$parameters = ["authorId" => $authorId->getBytes()];
 		$statement->execute($parameters);
 		//grab authorUsername from Mysql
+		try {
+			$author = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$author = new Author($row["authorId"], $row["authorUsername"]);
+			}
+		} catch(\Exception $exception) {
+			// if row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		};
+		return($author);
 	}
 	/**11
 	 * function returns an array of authors containing the term in their username
