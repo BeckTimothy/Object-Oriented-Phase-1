@@ -400,7 +400,9 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$query = "SELECT authorId, authorEmail, authorUsername FROM author WHERE authorUsername LIKE :authorUsername";
 		$statement = $pdo->prepare($query);
 		//create relationship between MySQL %string% query and placeholder
-		
+		$authorUsername = "%$authorUsername%";
+		$parameters = ["authorUsername" => $authorUsername];
+		$statement->execute($parameters);
 		//build and array of authors
 	}
 }
