@@ -362,7 +362,8 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$query = "SELECT authorId, authorUsername FROM author WHERE authorId = :authorId";
 		$statement = $pdo->prepare($query);
 		//create relationship between php authorId and PDO/MySQL authorId
-
+		$parameters = ["authorId" => $authorId->getBytes()];
+		$statement->execute($parameters);
 		//grab authorUsername from Mysql
 	}
 	/**11
