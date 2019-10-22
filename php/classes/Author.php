@@ -305,7 +305,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * @throws \PDOException when myswl related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	public function delete(\PDO $pdo) {
+	public function delete(\PDO $pdo) : void {
 		//create query template
 		$query = "DELETE FROM author WHERE authorId = :authorId";
 		$statement = $pdo->prepare($query);
@@ -315,6 +315,22 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$statement->execute($parameters);
 	}
 	/**
-	 * 
+	 *updates author in MySQL database
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when myswl related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
+	public function update(\PDO $pdo) : void {
+		//create query template
+		$query = "UPDATE author SET authorId = :authorId,
+			authorActivationToken = :authorActivationToken,
+			authorAvatarUrl = :authorAvatarUrl,
+			authorEmail = :authorEmail,
+			authorHash = :authorHash,
+			authorUsername = :authorUsername";
+		$statement = $pdo->prepare($query);
+
+		//create relationship between php state variables and PDO/MySQL variables
+	}
 }
