@@ -300,9 +300,16 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	}
 	/**
 	 * deletes author from MySQL database
-	 * 
+	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when myswl related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
+	public function delete(\PDO $pdo) {
+		//create query template
+		$query = "DELETE FROM author WHERE authorId = :authorId";
+		$statement = $pdo->prepare($query);
+
+		//
+	}
 }
