@@ -310,6 +310,11 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$query = "DELETE FROM author WHERE authorId = :authorId";
 		$statement = $pdo->prepare($query);
 
-		//
+		//create relationship between php state variables and PDO/MySQL variables
+		$parameters = ["authorId" => $this->authorId->getBytes()];
+		$statement->execute($parameters);
 	}
+	/**
+	 * 
+	 */
 }
