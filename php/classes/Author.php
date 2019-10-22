@@ -352,12 +352,17 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
 	public function getAuthorUsernameByAuthorId(\PDO $pdo, $authorId) {
-		//sanitize the tweetId before querying
+		//sanitize the authorId before querying
 		try {
 			$authorId = self::validateUuid($authorId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
+		// create query template that SELECTs AuthorUsername from author WHERE authorID is :authorID
+
+		//create relationship between php authorId and PDO/MySQL authorId
+
+		//grab authorUsername from Mysql
 	}
 	/**11
 	 * function returns an array of authors containing the term in their username
@@ -369,6 +374,14 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
 	public function getAuthorByAuthorUsername(\PDO $pdo, $authorUsername) :\SplFixedArray {
+		//sanitize authorUsername string
 
+		//escape any wildcards
+
+		//create query template that SELECTs Author(s) from author WHERE authorUsername contains %string%
+
+		//create relationship between MySQL %string% query and placeholder
+
+		//build and array of authors
 	}
 }
