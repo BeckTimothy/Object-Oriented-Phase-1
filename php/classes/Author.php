@@ -404,5 +404,18 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$parameters = ["authorUsername" => $authorUsername];
 		$statement->execute($parameters);
 		//build and array of authors
+		$authors = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$author = new Author($row["authorId"], $row["authorEmail"], $row["authorUsername"]);
+				$authors[$author->key()] = $author;
+				$authors->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($authors);
 	}
 }
