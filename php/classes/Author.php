@@ -395,7 +395,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 			throw(new \PDOException("tweet content invalid"));
 		}
 		//escape any wildcards
-
+		$authorUsername = str_replace("_","\\_", str_replace("%", "\\%", $authorUsername));
 		//create query template that SELECTs Author(s) from author WHERE authorUsername contains %string%
 
 		//create relationship between MySQL %string% query and placeholder
