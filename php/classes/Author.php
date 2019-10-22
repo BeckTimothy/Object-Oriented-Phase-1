@@ -125,7 +125,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		//checks if newAuthorAvatarUrl is a url
 		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_VALIDATE_URL);
 		if($newAuthorAvatarUrl === false) {
-			throw(new \UnexpectedValueException("Avatar Url is not a url"));
+			throw(new \UnexpectedValueException("Avatar Url is not a valid http:// url"));
 		}
 		//checks if $newAuthorAvatarUrl is less than 255 length
 		if(strlen($newAuthorAvatarUrl) > 255) {
