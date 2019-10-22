@@ -69,7 +69,7 @@ class Author implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 
-		// convert and store the tweet id
+		// convert and store the author id
 		$this->authorId = $uuid;
 	}
 	/**
@@ -378,8 +378,8 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		};
 		return($author);
 	}
-	/**11
-	 * function returns an array of authors containing the term in their username
+	/**
+	 * function returns an array of authors containing the string in their username
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $authorUsername to search for
