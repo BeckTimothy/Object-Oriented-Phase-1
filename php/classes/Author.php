@@ -343,6 +343,8 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	}
 
 	/**
+	 * function returns author username when querying by author Id
+	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $authorId to search for
 	 * @return Author|null author found or null if not found
@@ -353,6 +355,8 @@ $this->authorActivationToken = $newAuthorActivationToken;
 
 	}
 	/**
+	 * function returns an array of authors containing the term in their username
+	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $authorUsername to search for
 	 * @return \SplFixedArray SplFixedArray of authors found
