@@ -98,14 +98,14 @@ class Author implements \JsonSerializable {
 		//checks if token is valid
 		$newAuthorActivationToken = strtolower(trim($newAuthorActivationToken));
 		if(ctype_xdigit($newAuthorActivationToken) === false) {
-			throw(new \RangeException("user activation is not valid"));
+			throw(new \InvalidArgumentException("user activation is not valid"));
 		}
 		//checks if token has 32 characters
 		if(strlen($newAuthorActivationToken) !== 32) {
-			throw(new \RangeException("user activation token has to be 32"));
+			throw(new\RangeException("user activation token has to be 32"));
 		}
-		$this->authorActivationToken = $newAuthorActivationToken;
-	}
+$this->authorActivationToken = $newAuthorActivationToken;
+}
 	/**
 	 * accesor/getter method for author avatar URL
 	 *
@@ -125,13 +125,13 @@ class Author implements \JsonSerializable {
 		//checks if newAuthorAvatarUrl is a url
 		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_VALIDATE_URL);
 		if($newAuthorAvatarUrl === false) {
-			throw(new \UnexpectedValueException("$newAuthorAvatarUrl is no a url"));
+			throw(new \UnexpectedValueException("Avatar Url is not a url"));
 		}
 		//checks if $newAuthorAvatarUrl is less than 255 length
 		if(strlen($newAuthorAvatarUrl) > 255) {
 			throw(new \RangeException("url needs to be less than 255 characters in length"));
 		}
-		$this->authorAuthorAvatarUrl = $newAuthorAvatarUrl;
+		$this->authorAvatarUrl = $newAuthorAvatarUrl;
 	}
 	/**
 	 * accesor/getter method for author email
@@ -185,10 +185,10 @@ class Author implements \JsonSerializable {
 			throw(new \InvalidArgumentException("hash is empty or insecure"));
 		}
 		//make sure hash is correct type of hash
-		//$authorHashInfo = password_get_info($newAuthorHash);
-		//if($authorHashInfo["algoName"] !== "argon2i") {
-		//	throw(new \InvalidArgumentException("author hash is not a valid hash"));
-		//}
+		/*$authorHashInfo = password_get_info($newAuthorHash);
+		if($authorHashInfo["algoName"] !== "argon2i") {
+			throw(new \InvalidArgumentException("author hash is not a valid hash"));
+		}*/
 		//check if has is exactly 97 characters
 		if(strlen($newAuthorHash) !== 97) {
 			throw(new \RangeException("hash must be 97 characters in length"));
@@ -263,4 +263,46 @@ class Author implements \JsonSerializable {
 		//turns Uuid's into strings
 		$fields["authorId"] = $this->authorId->toString();
 	}
+
+	/**
+	 * inserts author into MySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when myswl related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function insert(\PDO $pdo) : void {
+		//create query template
+		$query = "INSERT INTO author(
+                   authorId, 
+                   authorActivationToken, 
+                   authorAvatarUrl, 
+                   authorEmail,
+                   authorHash,
+                   authorUsername)
+               VALUES(
+                  :authorId, 
+                  :authorActivationToken, 
+                  :authorAvatarUrl, 
+                  :authorEmail, 
+                  :authorHash, 
+                  :authorUsername)";
+		$statement = $pdo->prepare($query);
+		//create relationship between php state variables and PDO/MySQL variables
+		$parameters = [
+			"authorId" => $this->authorId->getBytes(),
+			"authorActivationToken" => $this->authorActivationToken,
+			"authorAvatarUrl" => $this->authorAvatarUrl,
+			"authorEmail" => $this->authorEmail,
+			"authorHash" => $this->authorHash,
+			"authorUsername" => $this->authorUsername];
+		$statement->execute($parameters);
+	}
+	/**
+	 * deletes author from MySQL database
+	 * 
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when myswl related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
 }
