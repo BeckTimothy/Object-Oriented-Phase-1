@@ -359,7 +359,8 @@ $this->authorActivationToken = $newAuthorActivationToken;
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		// create query template that SELECTs AuthorUsername from author WHERE authorID is :authorID
-
+		$query = "SELECT authorId, authorUsername FROM author WHERE authorId = :authorId";
+		$statement = $pdo->prepare($query);
 		//create relationship between php authorId and PDO/MySQL authorId
 
 		//grab authorUsername from Mysql
