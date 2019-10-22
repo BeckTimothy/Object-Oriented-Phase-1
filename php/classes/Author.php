@@ -332,5 +332,13 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$statement = $pdo->prepare($query);
 
 		//create relationship between php state variables and PDO/MySQL variables
+		$parameters = [
+			"authorId" => $this->authorId->getBytes(),
+			"authorActivationToken" => $this->authorActivationToken,
+			"authorAvatarUrl" => $this->authorAvatarUrl,
+			"authorEmail" => $this->authorEmail,
+			"authorHash" => $this->authorHash,
+			"authorUsername" => $this->authorUsername];
+		$statement->execute($parameters);
 	}
 }
