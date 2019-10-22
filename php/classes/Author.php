@@ -341,4 +341,25 @@ $this->authorActivationToken = $newAuthorActivationToken;
 			"authorUsername" => $this->authorUsername];
 		$statement->execute($parameters);
 	}
+
+	/**
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $authorId to search for
+	 * @return Author|null author found or null if not found
+	 * @throws \PDOException when myswl related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function getAuthorUsernameByAuthorId(\PDO $pdo, $authorId) {
+
+	}
+	/**
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $authorUsername to search for
+	 * @return \SplFixedArray SplFixedArray of authors found
+	 * @throws \PDOException when myswl related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function getAuthorByAuthorUsername(\PDO $pdo, $authorUsername) :\SplFixedArray {
+
+	}
 }
