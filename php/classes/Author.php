@@ -397,9 +397,10 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		//escape any wildcards
 		$authorUsername = str_replace("_","\\_", str_replace("%", "\\%", $authorUsername));
 		//create query template that SELECTs Author(s) from author WHERE authorUsername contains %string%
-
+		$query = "SELECT authorId, authorEmail, authorUsername FROM author WHERE authorUsername LIKE :authorUsername";
+		$statement = $pdo->prepare($query);
 		//create relationship between MySQL %string% query and placeholder
-
+		
 		//build and array of authors
 	}
 }
