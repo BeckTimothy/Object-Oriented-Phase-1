@@ -352,9 +352,14 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
 	public function getAuthorUsernameByAuthorId(\PDO $pdo, $authorId) {
-
+		//sanitize the tweetId before querying
+		try {
+			$authorId = self::validateUuid($authorId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
 	}
-	/**
+	/**11
 	 * function returns an array of authors containing the term in their username
 	 *
 	 * @param \PDO $pdo PDO connection object
