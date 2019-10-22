@@ -77,7 +77,7 @@ class Author implements \JsonSerializable {
 	 *
 	 * @return string value of author activation token
 	 */
-	public function getAuthorActivationToken() {
+	public function getAuthorActivationToken(): string {
 		return($this->authorActivationToken);
 	}
 	/**
@@ -111,7 +111,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 *
 	 * @return string value of author avatar URL
 	 */
-	public function getAuthorAvatarUrl() {
+	public function getAuthorAvatarUrl(): string {
 		return($this->authorAvatarUrl);
 	}
 	/**
@@ -138,7 +138,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 *
 	 * @return string value of author email
 	 */
-	public function getAuthorEmail() {
+	public function getAuthorEmail(): string {
 		return($this->authorEmail);
 	}
 	/**
@@ -167,7 +167,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 *
 	 * @return string value of author hash
 	 */
-	public function getAuthorHash() {
+	public function getAuthorHash(): string {
 		return($this->authorHash);
 	}
 	/**
@@ -200,7 +200,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 *
 	 * @return string value of author username
 	 */
-	public function getAuthorUsername() {
+	public function getAuthorUsername(): string {
 		return($this->authorUsername);
 	}
 	/**
@@ -262,8 +262,8 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$fields = get_object_vars($this);
 		//turns Uuid's into strings
 		$fields["authorId"] = $this->authorId->toString();
+		return($fields);
 	}
-
 	/**
 	 * inserts author into MySQL
 	 *
@@ -271,22 +271,9 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * @throws \PDOException when myswl related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	public function insert(\PDO $pdo) : void {
+	public function insert(\PDO $pdo): void {
 		//create query template
-		$query = "INSERT INTO author(
-                   authorId, 
-                   authorActivationToken, 
-                   authorAvatarUrl, 
-                   authorEmail,
-                   authorHash,
-                   authorUsername)
-               VALUES(
-                  :authorId, 
-                  :authorActivationToken, 
-                  :authorAvatarUrl, 
-                  :authorEmail, 
-                  :authorHash, 
-                  :authorUsername)";
+		$query = "INSERT INTO author(authorId, authorActivationToken, authorAvatarUrl, authorEmail, authorHash, authorUsername) VALUES(:authorId, :authorActivationToken, :authorAvatarUrl, :authorEmail, :authorHash, :authorUsername)";
 		$statement = $pdo->prepare($query);
 		//create relationship between php state variables and PDO/MySQL variables
 		$parameters = [
@@ -305,7 +292,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * @throws \PDOException when myswl related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	public function delete(\PDO $pdo) : void {
+	public function delete(\PDO $pdo): void {
 		//create query template
 		$query = "DELETE FROM author WHERE authorId = :authorId";
 		$statement = $pdo->prepare($query);
@@ -323,12 +310,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 */
 	public function update(\PDO $pdo) : void {
 		//create query template
-		$query = "UPDATE author SET authorId = :authorId,
-			authorActivationToken = :authorActivationToken,
-			authorAvatarUrl = :authorAvatarUrl,
-			authorEmail = :authorEmail,
-			authorHash = :authorHash,
-			authorUsername = :authorUsername";
+		$query = "UPDATE author SET authorId = :authorId, authorActivationToken = :authorActivationToken, authorAvatarUrl = :authorAvatarUrl, authorEmail = :authorEmail, authorHash = :authorHash, authorUsername = :authorUsername WHERE authorId = :authorId";
 		$statement = $pdo->prepare($query);
 
 		//create relationship between php state variables and PDO/MySQL variables
@@ -370,7 +352,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$author = new Author($row["authorId"], $row["authorUsername"]);
+				$author = new Author($row["authorId"], $row["authorActivationToken"], $row["authorAvatarUrl"], $row["authorEmail"], $row["authorHash"], $row["authorUsername"]);
 			}
 		} catch(\Exception $exception) {
 			// if row couldn't be converted, rethrow it
@@ -408,8 +390,8 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$author = new Author($row["authorId"], $row["authorEmail"], $row["authorUsername"]);
-				$authors[$author->key()] = $author;
+				$author = new Author($row["authorId"], $row["authorActivationToken"], $row["authorAvatarUrl"], $row["authorEmail"], $row["authorHash"], $row["authorUsername"]);
+				$authors[$authors->key()] = $author;
 				$authors->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
