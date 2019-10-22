@@ -387,9 +387,13 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * @throws \PDOException when myswl related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	public function getAuthorByAuthorUsername(\PDO $pdo, $authorUsername) :\SplFixedArray {
+	public function getAuthorByAuthorUsername(\PDO $pdo, string $authorUsername) :\SplFixedArray {
 		//sanitize authorUsername string
-
+		$authorUsername = trim($authorUsername);
+		$authorUsername = filter_var($authorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($authorUsername) === true) {
+			throw(new \PDOException("tweet content invalid"));
+		}
 		//escape any wildcards
 
 		//create query template that SELECTs Author(s) from author WHERE authorUsername contains %string%
