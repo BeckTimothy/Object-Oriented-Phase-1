@@ -14,36 +14,72 @@ use Ramsey\Uuid\Uuid;
 class Author implements \JsonSerializable {
 	//use ValidateDate;
 	use ValidateUuid;
+
 	/**
 	 * id for this author; this is the primary key
 	 * @var Uuid $authorId
 	 **/
 	private $authorId;
+
 	/**
 	 * Activation token for this author;
 	 * @var string $authorActivationToken
 	 **/
 	private $authorActivationToken;
+
 	/**
 	 * Avatar URL for the author;
 	 * @var string $authorAvatarUrl
 	 **/
 	private $authorAvatarUrl;
+
 	/**
 	 *Email address for this author; this is unique data.
 	 * @var string $authorEmail
 	 **/
 	private $authorEmail;
+
 	/**
 	 * hash containing password data for this author;
 	 * @var string $authorHash
 	 **/
 	private $authorHash;
+
 	/**
 	 * Username for this author; this is unique data.
 	 * @var string $authorUsername
 	 **/
 	private $authorUsername;
+
+	/**
+	 * constructor for this author class
+	 *
+	 * @param int $newAuthorId
+	 * @param string $newAuthorActivationToken
+	 * @param string $newAuthorAvatarUrl
+	 * @param string $newAuthorEmail
+	 * @param string $newAuthorHash
+	 * @param string $newAuthorUsername
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds
+	 * @throws \TypeError if data types violate type hints
+	 */
+	public function __construct($newAuthorId, $newAuthorActivationToken, $newAuthorAvatarUrl, $newAuthorEmail, $newAuthorHash, $newAuthorUsername) {
+		try {
+			$this->setAuthorId($newAuthorId);
+			$this->setAuthorActivationToken($newAuthorActivationToken);
+			$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
+			$this->setAuthorEmail($newAuthorEmail);
+			$this->setAuthorHash($newAuthorHash);
+			$this->setAuthorUsername($newAuthorUsername);
+		}
+			//determing what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
+
 	/**
 	 * accesor/getter method for author id
 	 *
@@ -225,34 +261,6 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$this->authorUsername = $newAuthorUsername;
 	}
 	/**
-	 * constructor for this author class
-	 *
-	 * @param int $newAuthorId
-	 * @param string $newAuthorActivationToken
-	 * @param string $newAuthorAvatarUrl
-	 * @param string $newAuthorEmail
-	 * @param string $newAuthorHash
-	 * @param string $newAuthorUsername
-	 * @throws \InvalidArgumentException if data types are not valid
-	 * @throws \RangeException if data values are out of bounds
-	 * @throws \TypeError if data types violate type hints
-	 */
-	public function __construct($newAuthorId, $newAuthorActivationToken, $newAuthorAvatarUrl, $newAuthorEmail, $newAuthorHash, $newAuthorUsername) {
-		try {
-			$this->setAuthorId($newAuthorId);
-			$this->setAuthorActivationToken($newAuthorActivationToken);
-			$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
-			$this->setAuthorEmail($newAuthorEmail);
-			$this->setAuthorHash($newAuthorHash);
-			$this->setAuthorUsername($newAuthorUsername);
-		}
-			//determing what exception type was thrown
-		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-	}
-	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
@@ -268,7 +276,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * inserts author into MySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when myswl related errors occur
+	 * @throws \PDOException when mysql related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
 	public function insert(\PDO $pdo): void {
@@ -380,10 +388,12 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$authorUsername = str_replace("_","\\_", str_replace("%", "\\%", $authorUsername));
 		//create query template that SELECTs Author(s) from author WHERE authorUsername contains %string%
 		$query = "SELECT authorId, authorEmail, authorUsername FROM author WHERE authorUsername LIKE :authorUsername";
+		//$pdo->prepate($query) uses mysql connection data from $pdo variable to prepare() $query variable for execution
 		$statement = $pdo->prepare($query);
 		//create relationship between MySQL %string% query and placeholder
 		$authorUsername = "%$authorUsername%";
 		$parameters = ["authorUsername" => $authorUsername];
+		//execute() function passes $parameters to prepare()'d function and runs the $query with $parameters
 		$statement->execute($parameters);
 		//build and array of authors
 		$authors = new \SplFixedArray($statement->rowCount());
