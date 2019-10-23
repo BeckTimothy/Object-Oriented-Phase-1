@@ -352,8 +352,8 @@ class Author implements \JsonSerializable {
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		// create query template that SELECTs AuthorUsername from author WHERE authorID is :authorID
-		$query = "SELECT authorId, authorUsername FROM author WHERE authorId = :authorId";
+		// create query template that SELECTs Author WHERE authorID is :authorID
+		$query = "SELECT authorId, authorActivationToken, authorAvatarUrl, authorEmail, authorHash, authorUsername FROM author WHERE authorId = :authorId";
 		$statement = $pdo->prepare($query);
 		//create relationship between php authorId and PDO/MySQL authorId
 		$parameters = ["authorId" => $authorId->getBytes()];
@@ -392,7 +392,7 @@ class Author implements \JsonSerializable {
 		//escape any wildcards
 		$authorUsername = str_replace("_", "\\_", str_replace("%", "\\%", $authorUsername));
 		//create query template that SELECTs Author(s) from author WHERE authorUsername contains %string%
-		$query = "SELECT authorId, authorEmail, authorUsername FROM author WHERE authorUsername LIKE :authorUsername";
+		$query = "SELECT authorId, authorActivationToken, authorAvatarUrl, authorEmail, authorHash, authorUsername FROM author WHERE authorUsername LIKE :authorUsername";
 		//$pdo->prepate($query) uses mysql connection data from $pdo variable to prepare() $query variable for execution
 		$statement = $pdo->prepare($query);
 		//create relationship between MySQL %string% query and placeholder
