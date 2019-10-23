@@ -57,7 +57,7 @@ class Author implements \JsonSerializable {
 	/**
 	 * constructor for this author class
 	 *
-	 * @param int $newAuthorId
+	 * @param Uuid $newAuthorId
 	 * @param string $newAuthorActivationToken
 	 * @param string $newAuthorAvatarUrl
 	 * @param string $newAuthorEmail
@@ -94,7 +94,7 @@ class Author implements \JsonSerializable {
 	/**
 	 * mutator/setter method for author id
 	 *
-	 * @param Uuid|string $newAuthorId new value of author id
+	 * @param Uuid $newAuthorId new value of author id
 	 * @throws \RangeException if $newAuthorId is not positive
 	 * @throws \TypeError if $newAuthorId is not a uuid or string
 	 */
@@ -415,7 +415,7 @@ class Author implements \JsonSerializable {
 		}
 		return ($authors);
 	}
-	
+
 	/**
 	 * formats the state variables for JSON serialization
 	 *
