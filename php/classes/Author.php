@@ -1,9 +1,12 @@
 <?php
+
 namespace BeckTimothy\ObjectOrientedPhase1;
 
 require_once("autoload.php");
 require_once(dirname(__DIR__) . "/lib/vendor/autoload.php");
+
 use Ramsey\Uuid\Uuid;
+
 /**
  * Creating author generation class
  *
@@ -72,8 +75,7 @@ class Author implements \JsonSerializable {
 			$this->setAuthorEmail($newAuthorEmail);
 			$this->setAuthorHash($newAuthorHash);
 			$this->setAuthorUsername($newAuthorUsername);
-		}
-			//determing what exception type was thrown
+		} //determing what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -85,16 +87,16 @@ class Author implements \JsonSerializable {
 	 *
 	 * @return Uuid value of author id
 	 **/
-	public function getAuthorId() : Uuid {
-		return($this->authorId);
+	public function getAuthorId(): Uuid {
+		return ($this->authorId);
 	}
+
 	/**
 	 * mutator/setter method for author id
 	 *
 	 * @param Uuid|string $newAuthorId new value of author id
 	 * @throws \RangeException if $newAuthorId is not positive
 	 * @throws \TypeError if $newAuthorId is not a uuid or string
-
 	 */
 	public function setAuthorId($newAuthorId) {
 		//verify the author id is valid
@@ -108,14 +110,16 @@ class Author implements \JsonSerializable {
 		// convert and store the author id
 		$this->authorId = $uuid;
 	}
+
 	/**
 	 * accesor/getter method for author activation token
 	 *
 	 * @return string value of author activation token
 	 */
 	public function getAuthorActivationToken(): string {
-		return($this->authorActivationToken);
+		return ($this->authorActivationToken);
 	}
+
 	/**
 	 * mutator/setter method for author activation token
 	 *
@@ -140,16 +144,19 @@ class Author implements \JsonSerializable {
 		if(strlen($newAuthorActivationToken) !== 32) {
 			throw(new\RangeException("user activation token has to be 32"));
 		}
-$this->authorActivationToken = $newAuthorActivationToken;
-}
+
+		$this->authorActivationToken = $newAuthorActivationToken;
+	}
+
 	/**
 	 * accesor/getter method for author avatar URL
 	 *
 	 * @return string value of author avatar URL
 	 */
 	public function getAuthorAvatarUrl(): string {
-		return($this->authorAvatarUrl);
+		return ($this->authorAvatarUrl);
 	}
+
 	/**
 	 * mutator/setter method for author avatar URL
 	 *
@@ -169,14 +176,16 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		}
 		$this->authorAvatarUrl = $newAuthorAvatarUrl;
 	}
+
 	/**
 	 * accesor/getter method for author email
 	 *
 	 * @return string value of author email
 	 */
 	public function getAuthorEmail(): string {
-		return($this->authorEmail);
+		return ($this->authorEmail);
 	}
+
 	/**
 	 * mutator/setter method for author email
 	 *
@@ -198,14 +207,16 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		}
 		$this->authorEmail = $newAuthorEmail;
 	}
+
 	/**
 	 * accesor/getter method for author hash
 	 *
 	 * @return string value of author hash
 	 */
 	public function getAuthorHash(): string {
-		return($this->authorHash);
+		return ($this->authorHash);
 	}
+
 	/**
 	 * mutator/setter method for author hash
 	 *
@@ -214,6 +225,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * @throws \RangeException if author hash is not 97 chars
 	 * @throws \TypeError if author has is not a string
 	 */
+
 	public function setAuthorHash(string $newAuthorHash): void {
 		//check if has is properly formatted
 		$newAuthorHash = trim($newAuthorHash);
@@ -231,14 +243,16 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		}
 		$this->authorHash = $newAuthorHash;
 	}
+
 	/**
 	 * accessor/getter method for author username
 	 *
 	 * @return string value of author username
 	 */
 	public function getAuthorUsername(): string {
-		return($this->authorUsername);
+		return ($this->authorUsername);
 	}
+
 	/**
 	 * mutator/setter method for author Username
 	 *
@@ -260,18 +274,20 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		}
 		$this->authorUsername = $newAuthorUsername;
 	}
+
 	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
 	 */
-	public function jsonSerialize() : array {
+	public function jsonSerialize(): array {
 		//collects all state variables
 		$fields = get_object_vars($this);
 		//turns Uuid's into strings
 		$fields["authorId"] = $this->authorId->toString();
-		return($fields);
+		return ($fields);
 	}
+
 	/**
 	 * inserts author into MySQL
 	 *
@@ -293,6 +309,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 			"authorUsername" => $this->authorUsername];
 		$statement->execute($parameters);
 	}
+
 	/**
 	 * deletes author from MySQL database
 	 *
@@ -309,6 +326,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 		$parameters = ["authorId" => $this->authorId->getBytes()];
 		$statement->execute($parameters);
 	}
+
 	/**
 	 *updates author in MySQL database
 	 *
@@ -316,11 +334,10 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * @throws \PDOException when myswl related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	public function update(\PDO $pdo) : void {
+	public function update(\PDO $pdo): void {
 		//create query template
 		$query = "UPDATE author SET authorId = :authorId, authorActivationToken = :authorActivationToken, authorAvatarUrl = :authorAvatarUrl, authorEmail = :authorEmail, authorHash = :authorHash, authorUsername = :authorUsername WHERE authorId = :authorId";
 		$statement = $pdo->prepare($query);
-
 		//create relationship between php state variables and PDO/MySQL variables
 		$parameters = [
 			"authorId" => $this->authorId->getBytes(),
@@ -366,8 +383,9 @@ $this->authorActivationToken = $newAuthorActivationToken;
 			// if row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		};
-		return($author);
+		return ($author);
 	}
+
 	/**
 	 * function returns an array of authors containing the string in their username
 	 *
@@ -377,7 +395,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 	 * @throws \PDOException when myswl related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	public function getAuthorByAuthorUsername(\PDO $pdo, string $authorUsername) :\SplFixedArray {
+	public function getAuthorByAuthorUsername(\PDO $pdo, string $authorUsername): \SplFixedArray {
 		//sanitize authorUsername string
 		$authorUsername = trim($authorUsername);
 		$authorUsername = filter_var($authorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -385,7 +403,7 @@ $this->authorActivationToken = $newAuthorActivationToken;
 			throw(new \PDOException("tweet content invalid"));
 		}
 		//escape any wildcards
-		$authorUsername = str_replace("_","\\_", str_replace("%", "\\%", $authorUsername));
+		$authorUsername = str_replace("_", "\\_", str_replace("%", "\\%", $authorUsername));
 		//create query template that SELECTs Author(s) from author WHERE authorUsername contains %string%
 		$query = "SELECT authorId, authorEmail, authorUsername FROM author WHERE authorUsername LIKE :authorUsername";
 		//$pdo->prepate($query) uses mysql connection data from $pdo variable to prepare() $query variable for execution
@@ -408,6 +426,6 @@ $this->authorActivationToken = $newAuthorActivationToken;
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($authors);
+		return ($authors);
 	}
 }
